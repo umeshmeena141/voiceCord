@@ -1,0 +1,155 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fafc;
+    color: #595354;
+  }
+  
+  .header {
+    background-color: #ffffff;
+    padding: 10px 40px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header > .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header > .logo-container > .logo-img {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+  }
+  
+  .header > .logo-container > .logo-text {
+    font-size: 26px;
+    font-weight: 700;
+  }
+  
+  .header > .logo-container > .logo-text > .logo-highlight {
+    color: #65a9e5;
+  }
+  
+  .content-container {
+    /* width: 100%; */
+    padding-top: 10px;
+    /* height: calc(100vh - 89px); */
+    display: None;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  
+  .active-users-panel {
+    width: 300px;
+    height: 100%;
+    border: 3px solid #cddfe7;
+  }
+  
+  .panel-title {
+    padding: 10px 0 10px 0;
+    /* padding-left: 30px; */
+    font-weight: 500;
+    font-size: 18px;
+    /* border-bottom: 1px solid #cddfe7; */
+  }
+  
+  .active-user {
+    padding: 10px 30px;
+    border-bottom: 1px solid #cddfe7;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .active-user:hover {
+    background-color: #e8e9eb;
+    transition: background-color 0.5s ease;
+  }
+  
+  .active-user--selected {
+    background-color: #fff;
+    border-right: 5px solid #65a9e5;
+    font-weight: 500;
+    transition: all 0.5s ease;
+  }
+  
+  .video-chat-container {
+    padding: 0 20px;
+    flex: 1;
+    position: relative;
+  }
+  
+  .talk-info {
+    font-weight: 500;
+    font-size: 21px;
+    padding: 10px 0 ;
+  }
+  
+  .remote-video {
+    border: 1px solid #cddfe7;
+    /* width: 300px; */
+    /* height: 100%; */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+    position: relative;
+  }
+  
+  .local-video {
+    position: relative;
+    border: 1px solid #cddfe7;
+    /* bottom: 60px;
+    right: 40px; */
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    /* border-radius: 5px; */
+    /* width: 300px; */
+    margin: 20px 0;
+    /* height:270px; */
+  }
+  .join-container{
+    width: 100%;
+    height: calc(100vh - 89px);
+    display: flex;
+    justify-content: center;
+  }
+  .username{
+    display: block;
+    margin: auto;
+  }
+  #submit{
+    background-color: #4da6ff;
+    margin: 5px;
+    width: 100px;
+    height:30px;
+    border-radius: 5px;
+  }
+  #user{
+    margin:5px;
+    width:300px;
+    height: 30px;
+    border-radius: 5px;
+
+    text-align: center;
+  }
+  .local_user{
+    background-color: black;
+    height: 200px;
+    position: absolute;
+  }
+  .overlay{
+    background-color: black;
+    position: absolute !important;
+    width: 100%;
+    height:200px;
+    color: white;
+  }
+  video{
+    position: absolute;
+    height: 200px;
+  }
+  .align_vertical{
+    padding: 90px;
+    overflow: hidden;
+  }

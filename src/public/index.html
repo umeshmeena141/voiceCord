@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <title>VoiceCord</title>
+   <link
+     href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap"
+     rel="stylesheet"
+   />
+   <link rel="stylesheet" href="./style.css" />
+   <script src="/socket.io/socket.io.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </head>
+ <body>
+   <div class="container">
+     <header class="header container">
+       <div class="logo-container justify-content-center">
+         <img src="https://raw.githubusercontent.com/Miczeq22/simple-chat-app/master/public/img/doge.png" alt="doge logo" class="logo-img" />
+         <h1 class="logo-text">
+           Voice<span class="logo-highlight">Cord</span>
+         </h1>
+       </div>
+     </header>
+     <div class="join-container">
+        <div class="username">
+            <input id="user" type="text" placeholder="Username">
+            <button id="submit" onclick="connect()"> Join </button>
+        </div>
+     </div>
+     <div class="content-container container ">
+       <div class="row">
+        <div class="active-users-panel col-sm-4" id="active-user-container">
+          <h3 class="panel-title text-center">Current User: <span id="current_user"></span></h3>
+           <!-- <h3 class="panel-title">Active Users:</h3> -->
+         </div>
+         <div class="video-chat-container col-sm-8">
+           <h2 class="talk-info text-center" id="talking-with-info"> 
+             Connected Users
+           </h2>
+           <div class="video-container">
+             <div class="col local-video p-0">
+                <div class="col local_user overlay" id="local_user"> 
+                  <div class="ted">
+                    Umesh Meena
+                  </div>
+                </div>
+                <video autoplay id="local-video" class="col"></video>
+                <div class="col">
+                  <button class="btn-danger col"> Mute</button>
+                </div>
+             </div>
+             <!-- <video autoplay class="remote-video" id="remote-video"></video> -->
+             <!-- <video autoplay muted class="local-video" id="local-video"></video> -->
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <script src="./scripts/index.js"></script>
+ </body>
+</html>
