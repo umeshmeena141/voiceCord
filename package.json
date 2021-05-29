@@ -4,7 +4,7 @@
   "description": "Real time voice chatting",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --exec './node_modules/.bin/ts-node' src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
