@@ -74,11 +74,13 @@ async function callWithUser(socketId){
     const offer = await users[socketId].createOffer();
     
     console.log("calling",offer);
-    await users[socketId].setLocalDescription(new RTCSessionDescription(offer));
-    socket.emit("call-user",{
-        offer,
-        to:socketId
+    await users[socketId].setLocalDescription(new RTCSessionDescription(offer)).then(()=>{
+        socket.emit("call-user",{
+            offer,
+            to:socketId
+        });
     });
+    
 }
 function createRemoteVideoElement(socket_id,name){
     console.log("v");
@@ -192,43 +194,39 @@ socket.on("user",({name})=>{
 });
 
 socket.on("call-made", async data=>{
-    // if(activeUser!=data.socket){
-    //     if(activeUser!=null){
-    //         socket.emit("disconnect-call",{
-    //             to: activeUser
-    //         });
-    //     }
-    //     disconnectCall();
-    // }
-    // console.log("call-recieved",data, peerConnection.getLocalStreams());
-    await users[data.socket].setRemoteDescription(new RTCSessionDescription(data.offer));
-    const answer = await users[data.socket].createAnswer();
-    // console.log("Create Answer",answer,peerConnection.getLocalStreams())
-    // setRemoteTrack();
-    await users[data.socket].setLocalDescription(new RTCSessionDescription(answer));
-    // console.log("Before Answer",peerConnection.getLocalStreams());
-    socket.emit("make-answer",{
-        answer:answer,
-        to:data.socket
+    await users[data.socket].setRemoteDescription(new RTCSessionDescription(data.offer)).then(async()=>{
+
+        await users[data.socket].createAnswer().then(async(answer)=>{
+            await users[data.socket].setLocalDescription(new RTCSessionDescription(answer)).then(async()=>{
+                // console.log("Before Answer",peerConnection.getLocalStreams());
+                socket.emit("make-answer",{
+                    answer:answer,
+                    to:data.socket
+                });
+                // console.log("After Answer",peerConnection.getLocalStreams());
+                isAlreadycalling = true;
+                activeUser = data.socket;
+                const userContainer = document.getElementById(data.socket);
+                // userContainer.setAttribute("class","active-user active-user--selected");
+                setRemoteTrack(data.socket);
+            });
+        }); 
     });
-    // console.log("After Answer",peerConnection.getLocalStreams());
-    isAlreadycalling = true;
-    activeUser = data.socket;
-    const userContainer = document.getElementById(data.socket);
-    // userContainer.setAttribute("class","active-user active-user--selected");
-    setRemoteTrack(data.socket);
 });
 
 socket.on('answer-made', async data=>{
     console.log("Answer Recieved", data);
-    await users[data.socket].setRemoteDescription(new RTCSessionDescription(data.answer));
-    activeUser = data.socket;
-    setRemoteTrack(data.socket);
-    if(!isAlreadycalling){
-        callWithUser(data.socket);
-        if(users[data.socket].getRemoteStreams().length > 0){
-            isAlreadycalling = true;
-        }        
-        // peerConnection = new RTCPeerConnection();
-    }
+    console.log("Remote Des1");
+    await users[data.socket].setRemoteDescription(new RTCSessionDescription(data.answer)).then(()=>{
+        console.log("Remote Des");
+        activeUser = data.socket;
+        setRemoteTrack(data.socket);
+        if(!isAlreadycalling){
+            callWithUser(data.socket);
+            if(users[data.socket].getRemoteStreams().length > 0){
+                isAlreadycalling = true;
+            }        
+            // peerConnection = new RTCPeerConnection();
+        }
+    });
 });
