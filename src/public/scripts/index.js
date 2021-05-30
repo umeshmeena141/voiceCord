@@ -1,10 +1,25 @@
 const {RTCPeerConnection, RTCSessionDescription} = window;
-
 let isAlreadycalling = false;
 var activeUser = null;
 var users = {}; 
 var is_joined = false;
-const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+var configuration = null
+
+window.onload = function() {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function($evt){
+       if(xhr.readyState == 4 && xhr.status == 200){
+           let res = JSON.parse(xhr.responseText);
+           console.log("response: ",res["v"]["iceServers"]);
+           configuration = {'iceServers':[res["v"]["iceServers"]]};
+        //    {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+       }
+    }
+    xhr.open("PUT", "https://global.xirsys.net/_turn/VoiceCord", true);
+    xhr.setRequestHeader ("Authorization", "Basic " + btoa("umeshmeena141:1b2eb1a0-c124-11eb-9467-0242ac150003") );
+    xhr.setRequestHeader ("Content-Type", "application/json");
+    xhr.send( JSON.stringify({"format": "urls"}) );
+};
 async function setLocalTracks(socket_id){
     const stream  = await navigator.mediaDevices.getUserMedia(
         {
