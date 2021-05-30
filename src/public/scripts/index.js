@@ -103,6 +103,7 @@ function createRemoteVideoElement(socket_id,name){
     buttonDiv.appendChild(btn);
     const remoteVideoContainer = document.createElement('div');
     remoteVideoContainer.setAttribute("class","col remote-video p-0");
+    remoteVideoContainer.setAttribute("id",socket_id);
 
     const nameContainer = document.createElement('div');
     nameContainer.setAttribute("class","col local_user overlay")
@@ -169,11 +170,11 @@ socket.on("remove-user",({socketId})=>{
 
 function removeUser(socketId){
     const userContainer = document.getElementById(socketId);
-    const remoteContainer = document.getElementById("remote_"+ socketId);
+    // const remoteContainer = document.getElementById("remote_"+ socketId);
     delete users[socketId];
     if (userContainer){
         userContainer.remove();
-        remoteContainer.remove();
+        // remoteContainer.remove();
     }
 }
 
