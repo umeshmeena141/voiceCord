@@ -221,12 +221,12 @@ socket.on('answer-made', async data=>{
         console.log("Remote Des");
         activeUser = data.socket;
         setRemoteTrack(data.socket);
-        if(!isAlreadycalling){
-            callWithUser(data.socket);
-            if(users[data.socket].getRemoteStreams().length > 0){
-                isAlreadycalling = true;
-            }        
-            // peerConnection = new RTCPeerConnection();
-        }
+        // if(!isAlreadycalling){
+        //     callWithUser(data.socket);
+        //     if(users[data.socket].getRemoteStreams().length > 0){
+        //         isAlreadycalling = true;
+        //     }        
+        //     // peerConnection = new RTCPeerConnection();
+        // }
     });
 });
