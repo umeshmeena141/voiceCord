@@ -4,6 +4,7 @@ let isAlreadycalling = false;
 var activeUser = null;
 var users = {}; 
 var is_joined = false;
+const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
 async function setLocalTracks(socket_id){
     const stream  = await navigator.mediaDevices.getUserMedia(
         {
@@ -120,7 +121,7 @@ function createRemoteVideoElement(socket_id,name){
 
 function createUserItemContainer(socketId, call){
 
-    users[socketId.socket_id] = new RTCPeerConnection();
+    users[socketId.socket_id] = new RTCPeerConnection(configuration);
     createRemoteVideoElement(socketId.socket_id, socketId.username);
     console.log(call);
     setLocalTracks(socketId.socket_id).then(
