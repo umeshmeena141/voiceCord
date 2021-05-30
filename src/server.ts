@@ -42,10 +42,12 @@ export class Server {
                     this.activeSockets.push({username:username,socket_id:socket.id});
     
                     socket.emit("update-user-list", {
-                        users: this.activeSockets.filter(activeSocket => activeSocket.socket_id != socket.id)
+                        users: this.activeSockets.filter(activeSocket => activeSocket.socket_id != socket.id),
+                        call:true
                     });
                     socket.broadcast.emit("update-user-list",{
-                        users:[{username:username,socket_id:socket.id}]
+                        users:[{username:username,socket_id:socket.id}],
+                        call:false
                     });
                     console.log(socket.id);
                     socket.emit("user", {name:username,socket_id:socket.id});
@@ -84,6 +86,7 @@ export class Server {
 
     public listen(callback: (port)=> void): void{
         this.httpServer.listen(this.DEFAULT_PORT, ()=>{
+            console.log(process.env.PORT);
             callback(this.DEFAULT_PORT);
         })
     }

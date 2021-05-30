@@ -3,10 +3,11 @@ const {RTCPeerConnection, RTCSessionDescription} = window;
 let isAlreadycalling = false;
 var activeUser = null;
 var users = {}; 
+var is_joined = false;
 async function setLocalTracks(socket_id){
     const stream  = await navigator.mediaDevices.getUserMedia(
         {
-            video:false, audio:true
+            video:true, audio:true
         }
     );
     const localVideo = document.getElementById("local-video");
@@ -38,6 +39,7 @@ function setRemoteTrack(socket_id){
 const socket = io();
 function connect(){
     username = document.getElementById("user").value;
+    is_joined = true;
     console.log("clicked");
     if(!username){
         window.alert("Please enter Username");
@@ -52,9 +54,11 @@ function connect(){
     
 
 }
-socket.on("update-user-list", ({users})=>{
-    console.log(users);
-    updateUserList(users);
+socket.on("update-user-list", ({users,call})=>{
+    // console.log(data,"USers");
+    if(is_joined){
+        updateUserList(users,call);
+    }
 });
 
 function unselectUsersFromList(){
@@ -113,40 +117,28 @@ function createRemoteVideoElement(socket_id,name){
     console.log("dada");
 }
 
-function createUserItemContainer(socketId){
-    // const userContainer = document.createElement('div');
-    // const username = document.createElement("p");
+function createUserItemContainer(socketId, call){
 
-    // userContainer.setAttribute("class","active-user");
-    // userContainer.setAttribute("id",socketId.socket_id);
-    // username.setAttribute("class","username");
-    // username.innerHTML = `Socket: ${socketId.username}`;
-    // userContainer.appendChild(username);
     users[socketId.socket_id] = new RTCPeerConnection();
     createRemoteVideoElement(socketId.socket_id, socketId.username);
+    console.log(call);
     setLocalTracks(socketId.socket_id).then(
         ()=>{
-            callWithUser(socketId.socket_id);
+            console.log(call);
+            if(call){
+                callWithUser(socketId.socket_id);
+            }
         }
     );
-    // userContainer.addEventListener('click', ()=>{
-    //     unselectUsersFromList();
-    //     userContainer.setAttribute("class","active-user active-user--selected");
-    //     const talkInfoUser = document.getElementById('talking-with-info');
-    //     talkInfoUser.innerHTML = `Talking with: "Socket: ${socketId.username}"`;
-    //     callWithUser(socketId.socket_id);
-
-    // })
-
-    // return userContainer
 }
-function updateUserList(socketIds){
+function updateUserList(socketIds, call){
     // const activeUserContainer = document.getElementById("active-user-container");
-
+    console.log(call,"1");
     socketIds.forEach(socketId => {
         const alreadyExistingUser = document.getElementById('remote_'+socketId.socket_id);
+        console.log(call,"2", alreadyExistingUser);
         if(!alreadyExistingUser){
-            createUserItemContainer(socketId);
+            createUserItemContainer(socketId, call);
             // activeUserContainer.appendChild(userContainer);
         }
     });
@@ -216,17 +208,17 @@ socket.on("call-made", async data=>{
 
 socket.on('answer-made', async data=>{
     console.log("Answer Recieved", data);
-    console.log("Remote Des1");
+    console.log("Remote Des1",users);
     await users[data.socket].setRemoteDescription(new RTCSessionDescription(data.answer)).then(()=>{
         console.log("Remote Des");
         activeUser = data.socket;
         setRemoteTrack(data.socket);
-        // if(!isAlreadycalling){
-        //     callWithUser(data.socket);
-        //     if(users[data.socket].getRemoteStreams().length > 0){
-        //         isAlreadycalling = true;
-        //     }        
-        //     // peerConnection = new RTCPeerConnection();
-        // }
+        if(!isAlreadycalling){
+            callWithUser(data.socket);
+            if(users[data.socket].getRemoteStreams().length > 0){
+                isAlreadycalling = true;
+            }        
+            // peerConnection = new RTCPeerConnection();
+        }
     });
 });
